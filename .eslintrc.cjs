@@ -43,6 +43,7 @@ module.exports = {
           { name: "Link", linkAttribute: "to" },
           { name: "NavLink", linkAttribute: "to" },
         ],
+        "react/prop-types": "off",
       },
     },
 
@@ -61,6 +62,7 @@ module.exports = {
             alwaysTryTypes: true,
           },
         },
+        "import/no-unresolved": "off",
       },
       extends: [
         "plugin:@typescript-eslint/recommended",
