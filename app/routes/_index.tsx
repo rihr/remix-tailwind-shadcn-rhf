@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import { Form } from "~/rhf-form-demo/demo";
+import { FormDemo } from "~/rhf-form-demo/demo";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,6 +10,6 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <Form />
+    <FormDemo />
   );
 }

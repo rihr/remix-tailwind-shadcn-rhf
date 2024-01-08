@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Control, UseFormRegister, UseFormUnregister, UseFormWatch, useForm } from "react-hook-form"
+import { Control, UseFormUnregister, UseFormWatch, useForm } from "react-hook-form"
 import * as z from "zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./form"
 import { Input } from "~/components/ui/input"
@@ -41,12 +41,11 @@ const formSchema = z.discriminatedUnion("attendeeType", [
 
 type AttendeeFormSchema = z.infer<typeof formSchema>
 
-export function ProfileForm() {
+export function ConditionalForm() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            // Here we can simply pass the values we get from a useQuery hook, when we're editing server state
             username: "user123",
             orgName: "",
         },
@@ -54,7 +53,7 @@ export function ProfileForm() {
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: AttendeeFormSchema) {
+    function handleSubmit(values: AttendeeFormSchema) {
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         console.log(values)
@@ -66,7 +65,7 @@ export function ProfileForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
                 <div className="flex flex-col gap-3">
                     <FormField
                         control={form.control}
@@ -85,15 +84,16 @@ export function ProfileForm() {
                         )}
                     />
                     <AttendeeTypeInput control={form.control} />
+
                     <AffiliationInput
+                        // With these props, you can actually see if an input can change other inputs, or it just renders data
+                        // However, this isn't actually required, as this form is wrapped in a FormContext
                         control={form.control}
-                        register={form.register}
                         unregister={form.unregister}
                         watch={form.watch}
                     />
                     <OrgNameInput
                         control={form.control}
-                        register={form.register}
                         unregister={form.unregister}
                         watch={form.watch}
                     />
@@ -101,7 +101,6 @@ export function ProfileForm() {
                 </div>
             </form>
         </Form>
-
     )
 }
 
@@ -164,14 +163,12 @@ function AttendeeTypeInput({
 
 interface AffiliationInputProps {
     control: Control<AttendeeFormSchema>,
-    register: UseFormRegister<AttendeeFormSchema>,
     unregister: UseFormUnregister<AttendeeFormSchema>,
     watch: UseFormWatch<AttendeeFormSchema>,
 }
 function AffiliationInput({
     control,
     watch,
-    register,
     unregister,
 }: AffiliationInputProps) {
 
@@ -183,7 +180,7 @@ function AffiliationInput({
         if (!isSpeaker) {
             unregister("affiliation")
         }
-    }, [isSpeaker, register, unregister])
+    }, [isSpeaker, unregister])
 
     if (!isSpeaker) {
         return null;
@@ -236,14 +233,12 @@ function AffiliationInput({
 
 interface OrgNameInputProps {
     control: Control<AttendeeFormSchema>,
-    register: UseFormRegister<AttendeeFormSchema>,
     unregister: UseFormUnregister<AttendeeFormSchema>,
     watch: UseFormWatch<AttendeeFormSchema>,
 }
 function OrgNameInput({
     control,
     watch,
-    register,
     unregister,
 }: OrgNameInputProps) {
 
@@ -256,7 +251,7 @@ function OrgNameInput({
         if (!isCompany) {
             unregister("orgName", { keepDefaultValue: true })
         }
-    }, [isCompany, register, unregister])
+    }, [isCompany, unregister])
 
     if (!isCompany) {
         return null;
