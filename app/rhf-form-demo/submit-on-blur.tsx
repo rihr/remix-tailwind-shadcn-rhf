@@ -43,7 +43,6 @@ export function SubmitOnBlurForm() {
 
 
     function handleSubmit(values: UserSchema) {
-
         if (!deepEqual(values, userData)) {
             console.log("PATCH data", updatedDiff(userData, values))
 

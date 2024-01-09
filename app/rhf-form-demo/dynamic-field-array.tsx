@@ -78,16 +78,6 @@ export function DynamicFieldArray() {
 
     return (
         <Form {...form}>
-            {/*
-            This also demonstrates performance, try adding 1000 fields, editing, submitting.
-            Try to notice any issues. There may be some, but that case is also covered by the library with virtual list support:
-            https://react-hook-form.com/advanced-usage#Workingwithvirtualizedlists
-            */}
-            <div className="flex gap-3">
-                <Button onClick={() => handleAdd(1)} variant={"outline"}>Add 1</Button>
-                <Button onClick={() => handleAdd(10)} variant={"outline"}>Add 10</Button>
-                <Button onClick={() => handleAdd(100)} variant={"outline"} >Add 100</Button>
-            </div>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
                 <div className="flex flex-col gap-3">
                     <FormField
@@ -129,6 +119,16 @@ export function DynamicFieldArray() {
                     <Button type="submit">Submit</Button>
                 </div>
             </form>
+            {/*
+            This also demonstrates performance, try adding 1000 fields, editing, submitting.
+            Try to notice any issues. There may be some, but that case is also covered by the library with virtual list support:
+            https://react-hook-form.com/advanced-usage#Workingwithvirtualizedlists
+            */}
+            <div className="flex gap-3 mt-6">
+                <Button onClick={() => handleAdd(1)} variant={"outline"}>Add 1</Button>
+                <Button onClick={() => handleAdd(10)} variant={"outline"}>Add 10</Button>
+                <Button onClick={() => handleAdd(100)} variant={"outline"} >Add 100</Button>
+            </div>
         </Form>
     )
 }
